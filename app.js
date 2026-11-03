@@ -10,12 +10,12 @@ function updateView() {
   pickupMap.set3D(is3D);
   toggle.setAttribute('aria-pressed', String(is3D));
   document.getElementById('toggle-label').textContent = is3D ? 'Back to 2D' : 'Switch to 3D';
-  document.getElementById('map-mode').textContent = is3D ? '3D MAP' : '2D MAP';
-  document.getElementById('map-hint-heading').textContent = is3D ? 'There’s your entrance.' : 'Find the door, before you go.';
-  document.getElementById('map-hint-copy').textContent = is3D ? 'The green doorway marks your street-level pickup.' : 'Switch to 3D to see buildings, the bridge, and your entrance.';
-  document.getElementById('tip-heading').textContent = is3D ? 'The right side. The right door.' : 'A new perspective, one tap away.';
-  document.getElementById('tip-copy').textContent = is3D ? 'Find the green doorway on the south side of River House.' : 'Tap “Switch to 3D” to see building heights and your pickup entrance.';
-  document.getElementById('entrance-description').textContent = is3D ? 'Look for the green doorway on the south side of River House. Meet your ride at street level.' : 'Your pickup is on the south side of River House, facing Riverside Drive.';
+  document.getElementById('map-mode').textContent = is3D ? 'DRIVER’S VIEW' : '2D MAP';
+  document.getElementById('map-hint-heading').textContent = is3D ? 'Your pickup from the driver’s view' : 'Find your pickup entrance';
+  document.getElementById('map-hint-copy').textContent = is3D ? 'River House · Main entrance · Street level' : 'Tap Switch to 3D to see the entrance from the car.';
+  document.getElementById('tip-heading').textContent = is3D ? 'At eye level, from the car.' : 'See what your driver sees.';
+  document.getElementById('tip-copy').textContent = is3D ? 'The camera looks from the pickup car toward the building’s main entrance.' : 'Switch to a street-level view to find the right entrance.';
+  document.getElementById('entrance-description').textContent = is3D ? 'The marked doorway is your pickup entrance, seen from the driver’s seat on Riverside Drive.' : 'Your pickup is on the south side of River House, facing Riverside Drive.';
   document.querySelector('.map-panel').classList.toggle('is-3d', is3D);
 }
 

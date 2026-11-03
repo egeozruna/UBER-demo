@@ -4,8 +4,8 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const palette = {
-    land: '#eaece6', lot: '#e1e1db', curb: '#d8dad5', road: '#fcfcf8',
-    water: '#bad5dd', waterEdge: '#aac9d0', park: '#cfdcc7', tree: '#91b49a',
+    land: '#e6e6e6', lot: '#dadada', curb: '#d0d0d0', road: '#ffffff',
+    water: '#c2d1d8', waterEdge: '#b4c6ce', park: '#d5dbd1', tree: '#a9b6a5',
     ink: '#263c33', accent: '#11835a', roof: '#d5d4cd', side: '#b8bbb5'
   };
   const buildings = [
@@ -47,7 +47,8 @@
     let frame = 0;
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function render(t) {
+    function renderFlat() {
+      const t=0;
       const angle = -25 * Math.PI / 180 * t;
       const pitch = 52 * Math.PI / 180 * t;
       const ca = Math.cos(angle), sa = Math.sin(angle), cp = Math.cos(pitch), sp = Math.sin(pitch);
@@ -151,7 +152,7 @@
       });
       function building(b) {
         const x=b.x,y=b.y,w=b.w,d=b.d,h=b.h*t;
-        const top=b.destination?'#b8cabb':(b.id%3===0?'#d9d6cb':b.id%3===1?'#d0d3cc':'#d7d8d1');
+        const top=b.destination?'#c8ceca':(b.id%3===0?'#d0d0d0':b.id%3===1?'#c9ccca':'#d4d4d2');
         const west=b.destination?'#8ba795':'#b4bbb4';
         const south=b.destination?'#a1baa8':'#c4c8bf';
         let s='';
@@ -204,8 +205,8 @@
         const ground=p(x+5,y+5,0);
         let s=`<ellipse cx="${ground[0].toFixed(2)}" cy="${ground[1].toFixed(2)}" rx="${(r*.8*scale).toFixed(2)}" ry="${(r*.5*scale*cp).toFixed(2)}" fill="#759383" opacity=".16"/>`;
         if(t>.01)s+=line([[x,y,0],[x,y,19*t]],'#a2ae94',3);
-        s+=`<ellipse cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" rx="${(r*scale).toFixed(2)}" ry="${(r*scale*(1-.15*t)).toFixed(2)}" fill="#9abb9d" stroke="#88ab90" stroke-width=".6"/>`;
-        s+=`<ellipse cx="${(q[0]-r*.2*scale).toFixed(2)}" cy="${(q[1]-r*.2*scale).toFixed(2)}" rx="${(r*.65*scale).toFixed(2)}" ry="${(r*.6*scale).toFixed(2)}" fill="#a6c4a5" opacity=".6"/>`;
+        s+=`<ellipse cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" rx="${(r*scale).toFixed(2)}" ry="${(r*scale*(1-.15*t)).toFixed(2)}" fill="#acb9a5" stroke="#88ab90" stroke-width=".6"/>`;
+        s+=`<ellipse cx="${(q[0]-r*.2*scale).toFixed(2)}" cy="${(q[1]-r*.2*scale).toFixed(2)}" rx="${(r*.65*scale).toFixed(2)}" ry="${(r*.6*scale).toFixed(2)}" fill="#bac6b3" opacity=".6"/>`;
         return s;
       }
       const objects=buildings.map(b=>({depth:(b.x+b.w/2-600)*sa+(b.y+b.d-525)*ca, render:()=>building(b)}));
@@ -229,18 +230,194 @@
       const ex=entry[0],ey=entry[1];
       out+=`<circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="10" fill="#fff" opacity=".96"/><circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="6.5" fill="#128159"/><circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="2" fill="#d5f5df"/>`;
       out+=`<g transform="translate(${(ex+21).toFixed(2)} ${(ey-14).toFixed(2)})" filter="url(#map-pill-shadow)"><rect x="0" y="0" width="105" height="30" rx="15" fill="#fff"/><circle cx="17" cy="15" r="4" fill="#128159"/><text x="29" y="19" font-size="10" font-weight="750" letter-spacing="1" font-family="Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#28503b">ENTRANCE</text></g>`;
-      svg.innerHTML=out;
+      return out;
+    }
+
+    function renderStreet() {
+      const box=svg.getBoundingClientRect();
+      const aspect=box.height>0?box.width/box.height:1.25;
+      const eye=[685,870,8], target=[815,775,23];
+      const forward=target.map((v,i)=>v-eye[i]);
+      const length=Math.hypot(...forward);
+      forward.forEach((v,i)=>forward[i]=v/length);
+      const horizontal=Math.hypot(forward[0],forward[1]);
+      const right=[-forward[1]/horizontal,forward[0]/horizontal,0];
+      const up=[-forward[2]*right[1],forward[2]*right[0],forward[0]*right[1]-forward[1]*right[0]];
+      const focal=490*zoom*Math.max(.86,Math.min(1,aspect/.85));
+      const cx=500,cy=375,near=3;
+      const camera=p=>{const q=p.map((v,i)=>v-eye[i]);return [q.reduce((s,v,i)=>s+v*right[i],0),q.reduce((s,v,i)=>s+v*up[i],0),q.reduce((s,v,i)=>s+v*forward[i],0)];};
+      const project=p=>[cx+focal*p[0]/p[2],cy-focal*p[1]/p[2]];
+      function clip(vertices,plane){
+        if(!vertices.length)return [];
+        const result=[];
+        for(let i=0;i<vertices.length;i++){
+          const a=vertices[i],b=vertices[(i+1)%vertices.length];
+          const da=plane(a),db=plane(b);
+          if(da>=0)result.push(a);
+          if((da>=0)!==(db>=0)){
+            const t=da/(da-db);
+            result.push(a.map((v,k)=>v+(b[k]-v)*t));
+          }
+        }
+        return result;
+      }
+      const planes=[
+        p=>p[2]-near,
+        p=>p[0]+600/focal*p[2],p=>600/focal*p[2]-p[0],
+        p=>p[1]+525/focal*p[2],p=>475/focal*p[2]-p[1]
+      ];
+      function polygon(points,fill,attrs=''){
+        let vertices=points.map(camera);
+        for(const plane of planes)vertices=clip(vertices,plane);
+        if(vertices.length<3)return '';
+        return `<polygon points="${vertices.map(project).map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' ')}" fill="${fill}" ${attrs}/>`;
+      }
+      const scene=[];
+      function add(points,fill,attrs='',decorations=[]){
+        const html=polygon(points,fill,attrs)+decorations.map(d=>polygon(d.points,d.fill,d.attrs||'')).join('');
+        if(!html)return;
+        const depth=points.reduce((sum,p)=>sum+camera(p)[2],0)/points.length;
+        scene.push({depth,html});
+      }
+      const quad=(x,y,w,d,z)=>[[x,y,z],[x+w,y,z],[x+w,y+d,z],[x,y+d,z]];
+      const wall=(x,y,w,z,h)=>[[x,y,z],[x+w,y,z],[x+w,y,z+h],[x,y,z+h]];
+      function solid(x,y,z,w,d,h,colors={}){
+        const front=colors.front||'#c4c7c8',side=colors.side||'#afb4b6',top=colors.top||'#d5d8d9';
+        if(eye[1]>y+d)add(wall(x,y+d,w,z,h),front);
+        if(eye[1]<y)add(wall(x,y,w,z,h),side);
+        if(eye[0]<x)add([[x,y,z],[x,y+d,z],[x,y+d,z+h],[x,y,z+h]],side);
+        if(eye[0]>x+w)add([[x+w,y,z],[x+w,y+d,z],[x+w,y+d,z+h],[x+w,y,z+h]],side);
+        if(eye[2]>z+h)add(quad(x,y,w,d,z+h),top);
+        if(eye[2]<z)add(quad(x,y,w,d,z),colors.bottom||'#5e6464');
+      }
+      // Split the ground at every street edge and into small depth-sortable tiles.
+      const xs=new Set([-300,1400]),ys=new Set([-400,970]);
+      for(let x=-300;x<=1400;x+=60)xs.add(x);
+      for(let y=-400;y<=970;y+=45)ys.add(y);
+      [140,400,660,960,1160].forEach(x=>[-30,-27,27,30].forEach(d=>xs.add(x+d)));
+      [210,360,600,850].forEach(y=>[-30,-27,27,30].forEach(d=>ys.add(y+d)));
+      [425,431,534,540,553,631,775,792,809,816].forEach(y=>ys.add(y));
+      [362,697,721,782,793,837,849,907,929].forEach(x=>xs.add(x));
+      const xlist=[...xs].sort((a,b)=>a-b),ylist=[...ys].sort((a,b)=>a-b);
+      function groundColor(x,y){
+        if(y>=425&&y<=540)return y>431&&y<534?'#b9cbd3':'#abbfc7';
+        const road=[140,400,660,960,1160].some(a=>Math.abs(a-x)<27)||[210,360,600,850].some(a=>Math.abs(a-y)<27);
+        const curb=[140,400,660,960,1160].some(a=>Math.abs(a-x)<30)||[210,360,600,850].some(a=>Math.abs(a-y)<30);
+        if(road)return '#f7f7f6';
+        if(curb)return '#bfc1c0';
+        if(x<362&&y>631&&y<816)return '#cdd4cb';
+        if(y>540&&y<553)return '#e9e9e6';
+        if(x>697&&x<929&&y>775&&y<816)return '#d8dad7';
+        return '#dddfdd';
+      }
+      for(let i=0;i<xlist.length-1;i++)for(let j=0;j<ylist.length-1;j++){
+        const x=xlist[i],y=ylist[j],w=xlist[i+1]-x,d=ylist[j+1]-y;
+        const color=groundColor(x+w/2,y+d/2);
+        const center=camera([x+w/2,y+d/2,0]);
+        if(center[2]<-80)continue;
+        add(quad(x,y,w,d,0),color,`stroke="${color}" stroke-width=".65"`);
+      }
+      // Painted street centerline. Each dash has its own depth ordering.
+      for(let x=570;x<=1320;x+=28)add(quad(x,849,13,1.2,.09),'#c8cbc8');
+      for(let k=-20;k<=20;k+=8){
+        add(quad(925,830+k,14,4,.1),'#fff');
+        add(quad(979,830+k,14,4,.1),'#fff');
+      }
+      // A low curb and the actual sidewalk up to the front door.
+      for(let x=695;x<928;x+=25)solid(x,815,0,Math.min(25,928-x),2.2,.8,{front:'#adb2af',top:'#eeeeeb'});
+      // The approach is a restrained gray path with a short green guidance strip.
+      for(let y=777;y<815;y+=8){
+        add(quad(795,y,40,8,.85),'#ebece7','stroke="#d4d7d2" stroke-width=".7"');
+        add(quad(813.5,y,3,6,.9),'#138759');
+      }
+      // Buildings are split into facade bays/floors. Window details stay with
+      // their wall tile, so a farther road tile can never paint over a facade.
+      buildings.forEach(b=>{
+        const height=b.destination?118:b.h;
+        const frontColor=b.destination?'#d0d2d0':(b.id%2?'#c8cdce':'#d4d7d6');
+        const sideColor=b.destination?'#b0b7b5':'#b5bdbf';
+        const span=26,floor=22;
+        if(eye[1]>b.y+b.d){
+          for(let x=b.x;x<b.x+b.w;x+=span)for(let z=0;z<height;z+=floor){
+            const w=Math.min(span,b.x+b.w-x),h=Math.min(floor,height-z);
+            const decorations=[];
+            const isEntrance=b.destination&&x<832&&x+w>798&&z<28;
+            if(w>12&&h>12&&!isEntrance){
+              const wx=x+4,ww=w-8,wz=z+4,wh=h-8;
+              decorations.push({points:wall(wx,b.y+b.d+.08,ww,wz,wh),fill:b.destination?'#a1afb1':'#9eabad'});
+              decorations.push({points:wall(wx+1,b.y+b.d+.12,Math.max(1,ww*.43),wz+1,Math.max(1,wh-2)),fill:'#b6c3c5'});
+              decorations.push({points:wall(wx+ww*.49,b.y+b.d+.16,.5,wz,wh),fill:'#d6dcdb'});
+              decorations.push({points:wall(wx,b.y+b.d+.2,ww,wz-.4,.6),fill:'#f1f2ee'});
+            }
+            if(z>0)decorations.push({points:wall(x,b.y+b.d+.1,w,z,.6),fill:'#e6e8e4'});
+            add(wall(x,b.y+b.d,w,z,h),frontColor,'',decorations);
+          }
+        }
+        if(eye[0]<b.x){
+          for(let y=b.y;y<b.y+b.d;y+=span)for(let z=0;z<height;z+=floor){
+            const d=Math.min(span,b.y+b.d-y),h=Math.min(floor,height-z),decorations=[];
+            if(d>12&&h>12)decorations.push({points:[[b.x-.08,y+5,z+4],[b.x-.08,y+d-5,z+4],[b.x-.08,y+d-5,z+h-4],[b.x-.08,y+5,z+h-4]],fill:'#8f9fa2'});
+            add([[b.x,y,z],[b.x,y+d,z],[b.x,y+d,z+h],[b.x,y,z+h]],sideColor,'',decorations);
+          }
+        }
+        if(eye[0]>b.x+b.w)add([[b.x+b.w,b.y,0],[b.x+b.w,b.y+b.d,0],[b.x+b.w,b.y+b.d,height],[b.x+b.w,b.y,height]],sideColor);
+        if(eye[1]<b.y)add(wall(b.x,b.y,b.w,0,height),sideColor);
+        if(eye[2]>height)add(quad(b.x,b.y,b.w,b.d,height),'#e1e3e0');
+      });
+      // Recessed double doors, a projecting canopy, and two short planter boxes.
+      add(wall(799,775.35,32,0,29),'#484f4d');
+      add(wall(802,775.55,26,1,25),'#568276');
+      add(wall(803,775.7,11.5,2,22),'#62887e');
+      add(wall(815.5,775.7,11.5,2,22),'#476b61');
+      add(wall(814.3,775.9,1.4,1,25),'#d2ddd5');
+      add(wall(812.1,776.1,.6,9,6),'#e9eee9');
+      add(wall(817.3,776.1,.6,9,6),'#e9eee9');
+      solid(794,774.5,28,42,17,2.8,{front:'#404c47',side:'#6f7e75',top:'#d9dfd8',bottom:'#899b8e'});
+      solid(749,790,.8,33,11,7,{front:'#b2b6af',side:'#9da69d',top:'#748b76'});
+      solid(849,790,.8,33,11,7,{front:'#b2b6af',side:'#9da69d',top:'#748b76'});
+      // Bridge geometry remains present beyond the neighborhood, when visible.
+      solid(630,414,16,60,126,6,{front:'#acb4b4',side:'#9ba7a9',top:'#e6e9e6'});
+      [632,686].forEach(x=>solid(x,414,22,2,126,5,{front:'#9faeac',side:'#899b99',top:'#bdc7c1'}));
+      // Slender bollards give a useful scale cue at the entrance.
+      [788,842].forEach(x=>solid(x,807,.8,2.3,2.3,7,{front:'#5e6963',side:'#4f5c55',top:'#87948b'}));
+      scene.sort((a,b)=>b.depth-a.depth);
+      let out='<defs><linearGradient id="street-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7eef3"/><stop offset="1" stop-color="#f7f8f7"/></linearGradient><filter id="street-label-shadow" x="-30%" y="-40%" width="160%" height="190%"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#24312b" flood-opacity=".17"/></filter></defs>';
+      out+='<rect width="1000" height="800" fill="url(#street-sky)"/><rect y="430" width="1000" height="370" fill="#dbdedb"/>';
+      out+=scene.map(s=>s.html).join('');
+      const entry=project(camera([815,776,14]));
+      const marker=project(camera([815,776,34]));
+      const mx=Math.max(340,Math.min(660,marker[0])),my=Math.max(180,Math.min(390,marker[1]-31));
+      out+=`<path d="M${mx.toFixed(2)} ${(my+58).toFixed(2)} L${entry[0].toFixed(2)} ${(entry[1]-6).toFixed(2)}" stroke="#fff" stroke-width="5"/><path d="M${mx.toFixed(2)} ${(my+58).toFixed(2)} L${entry[0].toFixed(2)} ${(entry[1]-6).toFixed(2)}" stroke="#138759" stroke-width="2"/>`;
+      out+=`<circle cx="${entry[0].toFixed(2)}" cy="${entry[1].toFixed(2)}" r="8" fill="#11875a" stroke="#fff" stroke-width="3"/>`;
+      out+=`<g transform="translate(${(mx-112).toFixed(2)} ${my.toFixed(2)})" filter="url(#street-label-shadow)"><rect width="224" height="60" rx="15" fill="#fff"/><rect x="13" y="13" width="34" height="34" rx="11" fill="#e7f2e9"/><path d="M26 35V23h10v12M29 35v-8h4v8" fill="none" stroke="#14845a" stroke-width="1.8" stroke-linejoin="round"/><text x="60" y="26" fill="#18261f" font-family="Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-weight="700" font-size="16">River House</text><text x="60" y="44" fill="#5a6b61" font-family="Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12">Main entrance</text></g>`;
+      return out;
+    }
+
+    let cachedSignature='',flatMarkup='',streetMarkup='',flatGroup=null,streetGroup=null;
+    function render(t){
+      const box=svg.getBoundingClientRect();
+      const signature=`${Math.round(box.width)}:${Math.round(box.height)}:${zoom}`;
+      if(signature!==cachedSignature){
+        cachedSignature=signature;
+        flatMarkup=renderFlat();
+        streetMarkup=renderStreet();
+        svg.innerHTML=`<g data-map-layer="flat">${flatMarkup}</g><g data-map-layer="street">${streetMarkup}</g>`;
+        flatGroup=svg.querySelector('[data-map-layer="flat"]');
+        streetGroup=svg.querySelector('[data-map-layer="street"]');
+      }
+      if(flatGroup)flatGroup.setAttribute('opacity',(1-t).toFixed(4));
+      if(streetGroup)streetGroup.setAttribute('opacity',t.toFixed(4));
     }
 
     function set3D(enabled) {
       target3D=Boolean(enabled);
-      svg.setAttribute('aria-label', target3D ? 'A three-dimensional neighborhood map. Raised buildings and a bridge reveal the green entrance at River House, with a route from the pickup car.' : 'A two-dimensional neighborhood map with a green route from a car to the entrance of River House.');
+      svg.setAttribute('aria-label', target3D ? 'Street-level 3D view from the driver’s perspective, facing River House. A green marker identifies the main entrance under a projecting canopy.' : 'A two-dimensional neighborhood map with a route from a car to the entrance of River House.');
       if(frame)cancelAnimationFrame(frame);
       const from=amount, to=target3D?1:0;
       if(reducedMotion){amount=to;render(amount);return;}
       const start=performance.now();
       function step(now){
-        const progress=Math.min(1,(now-start)/700);
+        const progress=Math.min(1,(now-start)/600);
         const ease=progress<.5?4*progress*progress*progress:1-Math.pow(-2*progress+2,3)/2;
         amount=from+(to-from)*ease;
         render(amount);

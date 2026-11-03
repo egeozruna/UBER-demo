@@ -4,46 +4,39 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="A student concept for Uber: switch a pickup map from 2D to 3D to find the right building entrance.">
-  <title>Uber · Find your pickup</title>
+  <meta name="description" content="An Uber-inspired student prototype: switch from a flat pickup map to the driver's street-level view of the entrance.">
+  <title>Uber · 3D pickup preview</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10'/%3E%3Ctext x='20' y='28' text-anchor='middle' font-family='Arial' font-size='27' fill='white'%3EU%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
   <script src="map-engine.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand-group"><span class="wordmark" aria-label="Uber">Uber</span><span class="nav-divider"></span><span class="ride-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 7 2-4h10l2 4 2 3v8h-3v-2H6v2H3v-8l2-3Zm2 0h10l-1-2H8L7 7Zm-1 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm12 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>Ride</span></div>
-    <div class="header-right"><span class="concept-tag">A new perspective on pickup</span><span class="profile" aria-label="Customer profile">E</span></div>
-  </header>
-
-  <main class="app-shell">
-    <aside class="pickup-panel" aria-label="Pickup details">
-      <div class="panel-intro"><span class="eyebrow"><span class="green-dot"></span>CUSTOMER VIEW</span><h1>Your pickup. <br>A clearer picture.</h1><p class="intro-copy">A little perspective makes finding<br class="desktop-break"> your ride a lot easier.</p></div>
-      <section class="location-card" aria-label="Selected pickup">
-        <div class="location-label"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg><span>Pickup location</span></div>
-        <h2>River House</h2><p>125 Riverside Drive</p>
-        <div class="location-bottom"><span class="tiny-dot"></span>Riverfront district<span class="location-check" aria-label="Location selected">✓</span></div>
-      </section>
-
-      <section class="entrance-card" aria-labelledby="entrance-heading">
-        <div class="entrance-icon"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 27V7l18-3v23M3 27h26M13 27V15l7-1v13M11 10l2-.3M18 9l2-.3" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="18" cy="21" r="1" fill="currentColor"/></svg></div>
-        <span class="small-label">MEET HERE</span><h2 id="entrance-heading">Main entrance</h2><p id="entrance-description">Your pickup is on the south side of River House, facing Riverside Drive.</p>
-        <div class="entrance-meta"><span class="green-dot"></span>Street-level pickup</div>
-      </section>
-
-      <div class="perspective-note"><span class="note-number">01</span><div><strong id="tip-heading">Know where to go.</strong><p id="tip-copy">Follow the green path to your pickup point.</p></div></div>
-      <div class="panel-footer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>A familiar map. A more precise pickup.</div>
-    </aside>
-
-    <section class="map-panel" aria-label="Interactive pickup map">
-      <div class="map-top"><div class="map-location"><span class="district-name">Riverfront district</span><span class="map-mode" id="map-mode">2D MAP</span></div><button id="toggle-3d" class="mode-toggle" type="button" aria-pressed="false" aria-controls="city-map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="toggle-label">Switch to 3D</span></button></div>
-      <div class="map-canvas"><svg id="city-map" viewBox="0 0 1000 800" role="img" aria-label="Top-down map of the Riverfront district"></svg></div>
-      <div class="map-controls" aria-label="Map controls"><div class="zoom-controls"><button id="zoom-in" class="map-control" type="button" aria-label="Zoom in">+</button><button id="zoom-out" class="map-control" type="button" aria-label="Zoom out">−</button></div><button id="reset-map" class="map-control reset-control" type="button" aria-label="Recenter map" title="Recenter map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button><span class="north-indicator" aria-label="North"><span>N</span><span class="north-arrow">↑</span></span></div>
-      <div class="map-bottom"><div class="map-legend"><span><i class="legend-pickup"></i>Pickup entrance</span><span><i class="legend-route"></i>Walking path</span></div><span class="map-credit">Illustrative neighborhood</span></div>
-      <div class="map-announcement" id="map-announcement" role="status" aria-live="polite"><span class="announcement-icon">↗</span><div><strong id="map-hint-heading">Your pickup, in view.</strong><span id="map-hint-copy">Follow the green path to the main entrance.</span></div></div>
-    </section>
-  </main>
-  <footer class="site-footer"><span>UBER <span class="footer-slash">/</span> 3D PICKUP CONCEPT</span><span>Student prototype · Fictional map · No rides booked</span></footer>
+<div class="device-stage">
+  <div class="phone-frame">
+    <div class="app-screen">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 18 14"><path d="M1 13V9h3v4zm5 0V6h3v7zm5 0V3h3v10zm5 0V0h2v13z"/></svg><svg viewBox="0 0 20 14" fill="none"><path d="M2 4c4.4-4 11.6-4 16 0M5 7c2.7-2.6 7.3-2.6 10 0M8 10c1.2-1.2 2.8-1.2 4 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="12.5" r="1.2" fill="currentColor"/></svg><svg viewBox="0 0 28 14" fill="none"><rect x="1" y="1" width="23" height="12" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="19" height="8" rx="1.5" fill="currentColor"/><path d="M26 5v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <header class="topbar"><span class="wordmark" aria-label="Uber">Uber</span><span class="pickup-header">Pickup preview <span class="header-dot"></span></span></header>
+      <main class="app-shell">
+        <section class="map-panel" aria-label="Interactive pickup map">
+          <div class="map-canvas"><svg id="city-map" viewBox="0 0 1000 800" role="img" aria-label="Map of the Riverfront district"></svg></div>
+          <div class="map-top"><div class="map-location"><span class="district-name">Riverfront</span><span class="map-mode" id="map-mode">2D MAP</span></div><button id="toggle-3d" class="mode-toggle" type="button" aria-pressed="false" aria-controls="city-map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="toggle-label">Switch to 3D</span></button></div>
+          <div class="map-controls" aria-label="Map controls"><div class="zoom-controls"><button id="zoom-in" class="map-control" type="button" aria-label="Zoom in">+</button><button id="zoom-out" class="map-control" type="button" aria-label="Zoom out">−</button></div><button id="reset-map" class="map-control reset-control" type="button" aria-label="Recenter map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button></div>
+          <div class="map-announcement" role="status" aria-live="polite"><strong id="map-hint-heading">Find your pickup entrance</strong><span id="map-hint-copy">Tap Switch to 3D to see the entrance from the car.</span></div>
+          <span class="map-credit">Illustrative map</span>
+        </section>
+        <section class="pickup-panel" aria-label="Pickup details">
+          <div class="sheet-handle" aria-hidden="true"></div>
+          <h1>Meet at River House</h1>
+          <div class="pickup-address"><span class="pickup-pin" aria-hidden="true"><span></span></span><div><strong>125 Riverside Drive</strong><span>Main entrance · Street level</span></div><span class="selected-check" aria-label="Selected pickup">✓</span></div>
+          <p id="entrance-description" class="entrance-description">Your pickup is on the south side of River House.</p>
+          <div class="view-tip"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><div><strong id="tip-heading">See what your driver sees.</strong><p id="tip-copy">Switch to 3D to find the right entrance.</p></div></div>
+        </section>
+      </main>
+      <div class="home-area" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+  <footer class="concept-footer"><strong>Uber 3D pickup</strong><span>Student concept · Fictional map · No rides booked</span></footer>
+</div>
 </body>
 </html>
