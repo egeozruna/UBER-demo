@@ -19,7 +19,7 @@
 
   <main class="app-shell">
     <aside class="pickup-panel" aria-label="Pickup details">
-      <div class="panel-intro"><span class="eyebrow"><span class="green-dot"></span>CUSTOMER VIEW</span><h1>Your pickup.<br>A clearer picture.</h1><p class="intro-copy">A little perspective makes finding<br class="desktop-break"> your ride a lot easier.</p></div>
+      <div class="panel-intro"><span class="eyebrow"><span class="green-dot"></span>CUSTOMER VIEW</span><h1>Your pickup. <br>A clearer picture.</h1><p class="intro-copy">A little perspective makes finding<br class="desktop-break"> your ride a lot easier.</p></div>
       <section class="location-card" aria-label="Selected pickup">
         <div class="location-label"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg><span>Pickup location</span></div>
         <h2>River House</h2><p>125 Riverside Drive</p>
@@ -37,8 +37,9 @@
     </aside>
 
     <section class="map-panel" aria-label="Interactive pickup map">
-      <div class="map-top"><div class="map-location"><span class="district-name">Riverfront district</span><span class="map-mode" id="map-mode">2D MAP</span></div><div id="mode-control"></div></div>
+      <div class="map-top"><div class="map-location"><span class="district-name">Riverfront district</span><span class="map-mode" id="map-mode">2D MAP</span></div><button id="toggle-3d" class="mode-toggle" type="button" aria-pressed="false" aria-controls="city-map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="toggle-label">Switch to 3D</span></button></div>
       <div class="map-canvas"><svg id="city-map" viewBox="0 0 1000 800" role="img" aria-label="Top-down map of the Riverfront district"></svg></div>
+      <div class="map-controls" aria-label="Map controls"><div class="zoom-controls"><button id="zoom-in" class="map-control" type="button" aria-label="Zoom in">+</button><button id="zoom-out" class="map-control" type="button" aria-label="Zoom out">−</button></div><button id="reset-map" class="map-control reset-control" type="button" aria-label="Recenter map" title="Recenter map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button><span class="north-indicator" aria-label="North"><span>N</span><span class="north-arrow">↑</span></span></div>
       <div class="map-bottom"><div class="map-legend"><span><i class="legend-pickup"></i>Pickup entrance</span><span><i class="legend-route"></i>Walking path</span></div><span class="map-credit">Illustrative neighborhood</span></div>
       <div class="map-announcement" id="map-announcement" role="status" aria-live="polite"><span class="announcement-icon">↗</span><div><strong id="map-hint-heading">Your pickup, in view.</strong><span id="map-hint-copy">Follow the green path to the main entrance.</span></div></div>
     </section>

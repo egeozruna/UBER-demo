@@ -221,7 +221,7 @@
       out+=label(810,360,'W FULTON ST',{size:9,tracking:1.2,dy:4});
       out+=label(364,486,'RIVER NORTH',{fill:'#698c97',size:11,tracking:2.6});
       out+=label(444,605,'W KINZIE ST',{size:9,dy:4});
-      out+=label(243,851,'W HUBBARD ST',{size:9,dy:3});
+      out+=label(243,851,'RIVERSIDE DRIVE',{size:9,dy:3});
       out+=label(167,749,'RIVERWALK PARK',{fill:'#718971',size:9,tracking:1.25});
       out+=label(808,949,'PICKUP GREEN',{fill:'#7a8e76',size:8,tracking:1.15});
       // A compact entrance callout is anchored to the exact door location.
