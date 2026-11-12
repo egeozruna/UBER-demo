@@ -2,6 +2,11 @@
 
 A small student prototype exploring a 3D map feature for Uber customers. The goal is to make the correct building entrance easier to find before meeting a ride.
 
+## Versions
+
+- **Original demo:** [River House](index.html), preserved unchanged.
+- **Rice campus:** [Anderson Hall](rice-campus/index.html), with real Rice ArcGIS building models and a movable 3D view. See [campus data and controls](rice-campus/README.md).
+
 ## Try it
 
 Open `index.html` in a browser. No installation, API key, sign-in, or location access is needed.

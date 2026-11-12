@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="An Uber-inspired Rice University campus map with real ArcGIS building models and Anderson Hall highlighted.">
+  <title>Uber · Rice campus pickup</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10'/%3E%3Ctext x='20' y='28' text-anchor='middle' font-family='Arial' font-size='27' fill='white'%3EU%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.34/esri/themes/light/main.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="map.css">
+  <script src="https://js.arcgis.com/4.34/" defer></script>
+  <script src="map-engine.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<div class="device-stage">
+  <div class="phone-frame">
+    <div class="app-screen">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 18 14"><path d="M1 13V9h3v4zm5 0V6h3v7zm5 0V3h3v10zm5 0V0h2v13z"/></svg><svg viewBox="0 0 20 14" fill="none"><path d="M2 4c4.4-4 11.6-4 16 0M5 7c2.7-2.6 7.3-2.6 10 0M8 10c1.2-1.2 2.8-1.2 4 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="12.5" r="1.2" fill="currentColor"/></svg><svg viewBox="0 0 28 14" fill="none"><rect x="1" y="1" width="23" height="12" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="3" y="3" width="19" height="8" rx="1.5" fill="currentColor"/><path d="M26 5v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <header class="topbar"><span class="wordmark" aria-label="Uber">Uber</span><span class="pickup-header">Pickup preview <span class="header-dot"></span></span></header>
+      <main class="app-shell">
+        <section class="map-panel" aria-label="Interactive pickup map">
+          <div class="map-canvas"><div id="city-map" aria-label="Interactive map of Rice University and Anderson Hall"></div><div id="destination-marker" class="destination-marker" hidden><span class="destination-label"><i></i>Anderson Hall</span><span class="destination-stem"></span><span class="destination-dot"></span></div><div id="map-loading" class="map-loading" role="status"><span class="loading-spinner"></span><strong>Loading Rice campus</strong><span>Connecting to Rice’s ArcGIS map…</span></div></div>
+          <div class="map-top"><div class="map-location"><span class="district-name">Rice University</span><span class="map-mode" id="map-mode">2D MAP</span></div><button id="toggle-3d" class="mode-toggle" type="button" aria-pressed="false" aria-controls="city-map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="toggle-label">Switch to 3D</span></button></div>
+          <div class="map-controls" aria-label="Map controls"><div class="zoom-controls"><button id="zoom-in" class="map-control" type="button" aria-label="Zoom in">+</button><button id="zoom-out" class="map-control" type="button" aria-label="Zoom out">−</button></div><button id="reset-map" class="map-control reset-control" type="button" aria-label="Recenter map"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button></div>
+          <div class="map-announcement" role="status" aria-live="polite"><strong id="map-hint-heading">Your destination is highlighted</strong><span id="map-hint-copy">Tap Switch to 3D to explore the campus buildings.</span></div>
+          <span class="map-credit"><a href="https://www.arcgis.com/home/item.html?id=9408406ac1d043f7a96336147b167124" target="_blank" rel="noopener">Rice GIS</a> · Powered by Esri</span>
+        </section>
+        <section class="pickup-panel" aria-label="Pickup details">
+          <div class="sheet-handle" aria-hidden="true"></div>
+          <h1>Meet at Anderson Hall</h1>
+          <div class="pickup-address"><span class="pickup-pin" aria-hidden="true"><span></span></span><div><strong>Rice University</strong><span>Anderson Hall · School of Architecture</span></div><span class="selected-check" aria-label="Selected pickup">✓</span></div>
+          <p id="entrance-description" class="entrance-description">Anderson Hall is highlighted in green on the map.</p>
+          <div class="view-tip"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><div><strong id="tip-heading">Explore your destination in 3D.</strong><p id="tip-copy">Drag to move the map. Use + and − to zoom.</p></div></div>
+        </section>
+      </main>
+      <div class="home-area" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+  <footer class="concept-footer"><strong>Uber 3D pickup</strong><span>Student concept · Rice campus data · No rides booked</span></footer>
+</div>
+</body>
+</html>
