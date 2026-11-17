@@ -1,0 +1,65 @@
+/* Small delivery-specific extensions to the existing phone and map layout. */
+[hidden]{display:none!important}
+.wordmark b{font-size:27px;font-weight:600;letter-spacing:-1.2px;color:#008f59}
+.app-screen{height:min(900px,calc(100svh - 100px));min-height:800px}
+.map-panel{min-height:340px}
+.map-location{padding:10px;max-width:210px}
+.mode-toggle{padding:12px 11px;min-width:108px}
+.map-mode{font-size:8px}
+.map-credit{font-size:8px;bottom:17px;left:8px;right:auto}
+#city-map .esri-ui-manual-container{bottom:13px}
+#map-markers,#marker-leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+#marker-leaders{z-index:1}
+#map-markers{z-index:1}
+.map-pin,.section-label,.geo-dot{position:absolute;transform:translate(-50%,-100%)}
+.map-pin{pointer-events:auto;border:0;background:transparent;padding:8px 2px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;font-size:11px;white-space:nowrap}
+.map-pin span{display:block;background:#fff;color:#333;border:2px solid #777;border-radius:7px;padding:7px 9px;box-shadow:0 2px 5px #0002;font-weight:700}
+.map-pin.recommended span{background:#007d51;color:#fff;border-color:#fff}
+.map-pin.dropoff span{background:#5c37b6;color:#fff;border-color:#fff}
+.map-pin.start span{background:#171717;color:#fff;border-color:#fff}
+.map-pin[aria-pressed=true] span{outline:2px solid #111;outline-offset:2px}
+.geo-dot{width:9px;height:9px;border:2px solid #fff;border-radius:50%;background:#007d51;transform:translate(-50%,-50%);box-shadow:0 0 0 1px #007d51}
+.geo-dot.dropoff{background:#5c37b6;box-shadow:0 0 0 1px #5c37b6}
+.section-label{font-size:9px;font-weight:600;white-space:nowrap;background:#fffE;color:#3e4e45;padding:4px 6px;border-radius:4px;box-shadow:0 1px 4px #0001}
+.angle-controls{position:absolute;bottom:38px;left:15px;right:65px;z-index:2;display:flex;gap:4px;background:#fff;border-radius:9px;padding:4px;box-shadow:0 2px 8px #0002}
+.angle-controls button{flex:1;min-height:38px;background:#fff;border:0;border-radius:6px;font-size:11px;color:#555}
+.angle-controls button[aria-pressed=true]{background:#000;color:#fff;font-weight:600}
+.delivery-panel{padding:8px 18px 10px;max-height:390px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.sheet-handle{margin-bottom:10px}
+.draft-note{font-size:10px;line-height:1.4;margin:0 0 9px;padding:6px 8px;background:#fff2d6;color:#745013;border-radius:5px}
+.delivery-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.delivery-heading h1{font-size:21px;margin:0;letter-spacing:-.5px;line-height:1.25}
+.walking-badge{font-size:10px;padding:5px 8px;background:#eef3ef;border-radius:20px;color:#315440}
+.route-summary{font-size:11px;color:#666;margin:6px 0 11px;line-height:1.4}
+.step-card{display:flex;gap:11px;align-items:flex-start;min-height:74px;background:#f4f5f4;border-radius:8px;padding:11px}
+.step-number{display:grid;place-items:center;background:#000;color:#fff;width:26px;height:26px;border-radius:50%;font-size:12px;flex:none}
+.step-card strong{font-size:12px;display:block;line-height:1.3}
+.step-card p{font-size:11px;line-height:1.45;color:#555;margin:5px 0 0}
+.step-controls{display:flex;align-items:center;justify-content:space-between;height:44px;gap:8px;margin-top:3px}
+.step-controls button{min-width:44px;height:40px;border:0;background:#f3f3f3;border-radius:7px;font-size:19px}
+.step-controls button:disabled{opacity:.3;cursor:default}
+.step-controls span{font-size:10px;color:#666}
+.all-directions,.dropoff-photo{font-size:11px;margin:1px 0 8px}
+summary{cursor:pointer;padding:8px 0;min-height:32px;color:#3f5147;font-weight:600}
+.all-directions ol{padding-left:22px;margin:5px 0 12px}
+.all-directions li{margin:0 0 10px;color:#555;line-height:1.5}
+.all-directions li strong{color:#222}
+.entrance-options{display:flex;gap:5px;margin-bottom:9px}
+.entrance-options button{min-height:42px;flex:1;padding:6px;border:1px solid #ddd;border-radius:7px;background:#fff;font-size:10px;font-weight:600}
+.entrance-options button[aria-pressed=true]{background:#edf5f0;border:2px solid #008555;color:#006941}
+.entrance-options button[data-pin=D][aria-pressed=true]{background:#f2ecff;border-color:#5c37b6;color:#5c37b6}
+.pin-detail{min-height:65px}
+.pin-detail strong{font-size:12px;line-height:1.4}
+.pin-detail p{font-size:11px;line-height:1.45;color:#555;margin:5px 0 8px}
+.photo-placeholder{border:1px dashed #c5cbc7;background:#f6f7f6;border-radius:8px;padding:14px;color:#656d68;font-size:11px;line-height:1.5}
+.dropoff-photo img{width:100%;max-height:180px;object-fit:cover;border-radius:8px}
+.delivery-button{width:100%;min-height:44px;background:#000;color:#fff;border:0;border-radius:8px;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px}
+.delivery-button:hover{background:#252525}
+.delivery-button:disabled{opacity:.5;cursor:wait}
+.app-status{font-size:10px;line-height:1.4;color:#6a6a6a;margin:8px 0 0;text-align:center}
+.complete-state{text-align:center;padding:9px 0}
+.complete-state h1{font-size:21px;margin:8px 0}
+.complete-state p{font-size:12px;color:#666;line-height:1.5;margin:8px 0 16px}
+.complete-icon{display:grid;place-items:center;width:48px;height:48px;background:#e1f3e9;border-radius:50%;color:#00864f;font-size:24px;margin:0 auto}
+.concept-footer a{color:inherit}
+@media(max-width:480px){.app-screen{height:100svh;min-height:780px}.delivery-panel{max-height:390px}.map-panel{min-height:330px}.topbar{padding:0 20px}.map-location{max-width:205px}.concept-footer{padding:10px}}

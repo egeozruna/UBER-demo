@@ -4,6 +4,7 @@ A small student prototype exploring a 3D map feature for Uber customers. The goa
 
 ## Versions
 
+- **Jones delivery test:** [Academic Quad → Jones College](jones-delivery/index.html), built on the existing campus demo with walking directions, editable draft entrance/drop-off markers, angle presets, and delivery completion. [Site-visit setup and sources](jones-delivery/README.md).
 - **Original demo:** [River House](index.html), preserved unchanged.
 - **Rice campus:** [Anderson Hall](rice-campus/index.html), with real Rice ArcGIS building models and a movable 3D view. See [campus data and controls](rice-campus/README.md).
 
