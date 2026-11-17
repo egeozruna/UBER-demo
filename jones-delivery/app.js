@@ -52,7 +52,7 @@ async function run(action) {
   if (!map || busy) return;
   busy = true; updateControls();
   try { await action(); }
-  catch (error) { console.error('Delivery map:', error); status('That view could not load. Check your connection and try again.'); }
+  catch (error) { console.error('Delivery map:', error.name, error.message, JSON.stringify(error.details || {})); status('That view could not load. Check your connection and try again.'); }
   finally { busy = false; updateControls(); }
 }
 

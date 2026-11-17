@@ -148,7 +148,17 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
         for (const section of config.sections) addMarker({ ...section, id: section.name, label: section.name, kind: 'section', offset: [0, -4] });
         for (const landmark of config.landmarks || []) addMarker({ ...landmark, id: landmark.name, label: landmark.name, kind: 'landmark', offset: [0, -2] });
         const updateMarkers = () => {
-          for (const m of markers) {
+          // Reserve space for controls, then place delivery pins before building labels.
+          // Screen-space placement keeps labels separate while the camera rotates.
+          const rootBox = markerRoot.getBoundingClientRect();
+          const occupied = [...document.querySelectorAll('.map-top > *, .map-controls, .angle-controls:not([hidden])')].map(el => {
+            const b = el.getBoundingClientRect();
+            return { x: b.left - rootBox.left, y: b.top - rootBox.top, w: b.width, h: b.height };
+          });
+          const priority = m => m.kind === 'recommended' || m.id === 'start' ? 0 : m.kind === 'dropoff' ? 1 : m.kind === 'alternative' ? 2 : 3;
+          const ordered = [...markers].sort((a, b) => priority(a) - priority(b));
+          const overlaps = (a, b) => a.x < b.x + b.w + 3 && a.x + a.w + 3 > b.x && a.y < b.y + b.h + 3 && a.y + a.h + 3 > b.y;
+          for (const m of ordered) {
             const enabled = is3D ? m.id !== 'start' && m.kind !== 'landmark' : m.kind === 'dropoff' || m.id === 'start' || m.kind === 'landmark';
             const p = enabled && view.toScreen(point(m.coordinates, is3D ? m.heightFeet : 1));
             const visible = p && p.x > 0 && p.y > 58 && p.x < view.width && p.y < view.height - 20;
@@ -156,8 +166,20 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
             if (!visible) continue;
             if (m.kind === 'dropoff') m.element.querySelector('span').textContent = is3D ? 'D · Drop-off' : 'Jones · Drop-off D';
             const offset = !is3D && m.kind === 'dropoff' ? [0, -12] : m.offset;
-            const x = Math.max(48, Math.min(view.width - 48, p.x + offset[0]));
-            const y = Math.max(102, Math.min(view.height - 32, p.y + offset[1]));
+            const width = m.element.offsetWidth, height = m.element.offsetHeight;
+            const candidates = [[0, 0], [0, -40], [0, 40], [-55, 0], [55, 0], [-55, -45], [55, -45], [-55, 45], [55, 45], [0, -80]];
+            let placement;
+            for (const [dx, dy] of candidates) {
+              const x = Math.max(width / 2 + 6, Math.min(view.width - width / 2 - 6, p.x + offset[0] + dx));
+              const y = Math.max(height + 65, Math.min(view.height - (is3D ? 87 : 25), p.y + offset[1] + dy));
+              const box = { x: x - width / 2, y: y - height, w: width, h: height };
+              const score = occupied.filter(other => overlaps(box, other)).length;
+              if (!placement || score < placement.score) placement = { x, y, box, score, moved: dx !== 0 || dy !== 0 };
+              if (score === 0) break;
+            }
+            const { x, y } = placement;
+            occupied.push(placement.box);
+            if ((m.kind === 'section' || m.kind === 'landmark') && placement.moved) m.leader.style.display = '';
             m.element.style.left = `${x}px`; m.element.style.top = `${y}px`;
             m.dot.style.left = `${p.x}px`; m.dot.style.top = `${p.y}px`;
             m.leader.setAttribute('x1', p.x); m.leader.setAttribute('y1', p.y);
