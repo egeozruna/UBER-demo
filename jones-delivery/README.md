@@ -6,17 +6,17 @@ Live URL after publication: https://egeozruna.github.io/UBER-demo/jones-delivery
 
 ## Participant task
 
-Act as an Uber Eats delivery driver. Begin at the meeting point in Academic Quad, walk to Jones College, identify the recommended entrance, and meet the customer at the outdoor drop-off marker D. Use the map and building views as a reference; the app does not track your location or advance directions automatically.
+Act as an Uber Eats delivery driver. Begin at the meeting point in Academic Quad, walk to Jones College, identify the recommended entrance, and meet the customer in the North Wing lobby at marker D. Use the map and building views as a reference; the app does not track your location or advance directions automatically.
 
-The facilitator should time the walk and verify the participant identifies the agreed physical drop-off point. The **Mark as delivered** button only changes the demo's on-screen state; it does not send an order or collect trial results. **Start next delivery** resets the app for another participant. Refreshing also clears completion state. Use the same confirmed start, outdoor destination, and instructions for the Google Maps comparison group.
+The facilitator should time the walk and verify the participant identifies the agreed physical drop-off point. The **Mark as delivered** button only changes the demo's on-screen state; it does not send an order or collect trial results. **Start next delivery** resets the app for another participant. Refreshing also clears completion state. Use the same confirmed start, lobby destination, and instructions for the Google Maps comparison group.
 
 ## What works
 
-- A draft walking route of approximately 470 m from Academic Quad to Jones, following mapped pedestrian ways.
+- A draft walking route of approximately 490 m from Academic Quad to the North Wing lobby, following mapped pedestrian ways with a draft final entrance/lobby connection.
 - Five manual direction steps. The arrows focus the selected route segment; recenter shows the whole route again.
 - Jones's actual published 3D geometry, with the north wing, south wing, and central/commons names anchored above their roofs. Building names stay in place as the camera rotates and can be hidden by the model; entrance and drop-off pins remain prominent overlays. A neutral material simplifies its appearance.
 - Dragging, zoom, and **Approach / Courtyard / Overhead** camera presets.
-- Entrance candidates **A, B, C**, with **A** marked recommended for this draft, plus a separate purple outdoor hand-off marker **D**. Selecting an alternative does not silently change the intended delivery destination.
+- Entrance candidates **A, B, C**, with **C** marked recommended for this draft, plus a separate purple North Wing lobby marker **D**. Selecting an alternative does not silently change the intended delivery destination.
 - An editable drop-off photo placeholder and delivery completion/reset.
 
 ## Site visit: required before participant testing
@@ -25,8 +25,8 @@ The route, meeting point, entrances, and drop-off are a draft, not field-verifie
 
 1. Fix one exact meeting point in Academic Quad. The current start is a provisional point on a mapped path in the Quad.
 2. Walk the full route and check crossings, barriers, construction, and access. The paths were derived from OpenStreetMap, not inspected on foot.
-3. Identify the actual doors and decide which entrance should serve this test. A and B are mapped entrance candidates, not verified delivery access. C is an illustrative north-wing doorway placeholder.
-4. Choose and photograph one exact outdoor customer hand-off spot. D currently sits beside A as an editable placeholder. Do not use the placeholder as an agreed physical destination without checking it.
+3. Identify the actual doors and decide which entrance should serve this test. A and B are mapped entrance candidates, not verified delivery access. C is the recommended North Wing doorway placeholder for the lobby delivery; confirm its position and access.
+4. Choose and photograph one exact customer hand-off spot in the North Wing lobby. D currently sits just inside entrance C as an editable placeholder. Do not use the placeholder as an agreed physical destination without checking it.
 5. Confirm current Jones access with campus staff as needed. Rice's [September 30, 2026 notice](https://emergency.rice.edu/incident/utility-outage-2026-09-30) reported Jones South closed after an electrical incident. That notice alone does not establish whether access has since changed.
 6. Run a phone walkthrough with the final configuration before using it for the comparison.
 
@@ -39,8 +39,8 @@ Edit **route-config.js**. All editable geographic coordinates use **[longitude, 
 | `start` | Meeting-point name, coordinates, and note |
 | `destination` | Jones building-view camera target |
 | `entrances` | Candidate coordinates, names, and instructions |
-| `recommendedEntrance` | The confirmed entrance ID, currently A |
-| `dropoff` | Exact outdoor spot, instructions, and optional photo path |
+| `recommendedEntrance` | The confirmed entrance ID, currently C |
+| `dropoff` | Exact North Wing lobby spot, instructions, and optional photo path |
 | `dropoff.photo` | Set to a relative image path such as `photos/dropoff.jpg`; leave empty until you have the real photograph |
 | `route.coordinates` | The continuous pedestrian route; first point must equal `start.coordinates`, final point must equal `dropoff.coordinates` |
 | `route.entranceIndex` | Index of the recommended entrance's route point; the final short connection to D is drawn purple |
@@ -54,7 +54,7 @@ If you choose a different recommended entrance, update the walking route and the
 
 - [Rice's published 3D campus model](https://www.arcgis.com/home/item.html?id=9408406ac1d043f7a96336147b167124), streamed through ArcGIS Maps SDK for JavaScript 4.34. The same alignment and elevation correction as the earlier campus demo is retained. No 3D meshes are redistributed here.
 - [Rice building footprints](https://services.arcgis.com/lqRTrQp2HrfnJt8U/arcgis/rest/services/General_Buildings_Rice/FeatureServer/0), lawns, roads, and open spaces from the earlier campus demo.
-- [OpenStreetMap](https://www.openstreetmap.org/#map=18/29.7200/-95.3984) pedestrian ways, retrieved November 17, 2026 through the public map API. The draft route follows ways `1528606935`, `87452244`, `44896171`, `1051165099`, `255487614`, and `903142675`, followed by a short placeholder connection to D. Mapped entrance candidates: [A, node 8388294692](https://www.openstreetmap.org/node/8388294692) and [B, node 8388335033](https://www.openstreetmap.org/node/8388335033).
+- [OpenStreetMap](https://www.openstreetmap.org/#map=18/29.7200/-95.3984) pedestrian ways, retrieved November 17, 2026 through the public map API. The draft route follows ways `1528606935`, `87452244`, `44896171`, `1051165099`, and `255487614`, followed by placeholder connections to entrance C and lobby D. Mapped entrance candidates: [A, node 8388294692](https://www.openstreetmap.org/node/8388294692) and [B, node 8388335033](https://www.openstreetmap.org/node/8388335033).
 - Pedestrian data in `walking-paths.js` and the derived route coordinates are © OpenStreetMap contributors, available under the [Open Database License](https://www.openstreetmap.org/copyright). This repository exposes the derived coordinates. Editing steps and pins does not establish that they are physically accessible.
 - Rice Facilities describes the [north, south, and central wings and commons](https://facilities.rice.edu/construction/the-first-100-years). The central / commons label groups the connected central section and its ground-level commons rather than claiming detailed interior mapping.
 - [PGAL's project page and photographs](https://www.pgal.com/portfolio/rice-university-martel-jones-brown-colleges/) provide architectural context. No stock or generated photograph is substituted for the future field photograph of the actual drop-off.

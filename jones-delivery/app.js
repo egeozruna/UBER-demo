@@ -41,7 +41,7 @@ function selectPin(id) {
   selectedPin = id;
   const pin = id === 'D' ? config.dropoff : config.entrances.find(p => p.id === id);
   if (!pin) return;
-  const kind = id === 'D' ? 'Drop-off' : id === config.recommendedEntrance ? 'Recommended entrance' : 'Alternative entrance';
+  const kind = id === 'D' ? config.dropoff.name : id === config.recommendedEntrance ? 'Recommended entrance' : 'Alternative entrance';
   $('pin-title').textContent = `${id} · ${kind}${config.verified ? '' : ' (draft)'}`;
   $('pin-description').textContent = pin.note;
   document.querySelectorAll('.entrance-options button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pin === id)));
@@ -87,7 +87,7 @@ if (config.dropoff.photo) {
 } else {
   const placeholder = document.createElement('div');
   placeholder.className = 'photo-placeholder';
-  placeholder.textContent = 'Drop-off photo to be added after the site visit. D is an editable outdoor placeholder beside entrance A.';
+  placeholder.textContent = `Drop-off photo to be added after the site visit. D marks an approximate spot in the ${config.dropoff.name}; confirm its exact position on site.`;
   $('photo-content').append(placeholder);
 }
 if (config.verified) {
@@ -125,6 +125,7 @@ function showError(error) {
   status('Map unavailable. Read all walking directions below.');
 }
 
+$('dropoff-name').textContent = config.dropoff.name;
 updateMode(false); updateStep(); selectPin(selectedPin);
 const loadingTimeout = setTimeout(() => {
   $('loading-detail').textContent = 'Still loading Rice’s campus data…';

@@ -4,10 +4,10 @@
 // A/B are mapped door candidates, C and D are placeholders; none is field-verified.
 // Keep route endpoints and step indices aligned when changing the route.
 window.JONES_DELIVERY = {
-  "version": "jones-field-draft-1",
+  "version": "jones-north-lobby-1",
   "verified": false,
   "start": {
-    "name": "Meeting point · Academic Quad",
+    "name": "Meeting point \u00b7 Academic Quad",
     "coordinates": [
       -95.3988409,
       29.7186112
@@ -21,7 +21,7 @@ window.JONES_DELIVERY = {
       29.72151172
     ]
   },
-  "recommendedEntrance": "A",
+  "recommendedEntrance": "C",
   "entrances": [
     {
       "id": "A",
@@ -30,7 +30,7 @@ window.JONES_DELIVERY = {
         -95.3969546,
         29.7214912
       ],
-      "note": "Central / commons building, courtyard side. Recommended for this draft delivery; door and access not yet verified.",
+      "note": "Central / commons building, courtyard side. Not the entrance for this North Wing lobby delivery.",
       "source": "OpenStreetMap entrance node 8388294692"
     },
     {
@@ -50,20 +50,21 @@ window.JONES_DELIVERY = {
         -95.39712334,
         29.7217526
       ],
-      "note": "Illustrative entrance candidate on the courtyard side of the north wing. Position must be checked on site.",
+      "note": "Use the North Wing courtyard-side entrance for the lobby delivery. This door position and access still need confirmation on site.",
       "source": "Editable placeholder; not a verified doorway"
     }
   ],
   "dropoff": {
     "id": "D",
-    "name": "Outdoor hand-off beside A",
+    "name": "North Wing lobby",
     "coordinates": [
-      -95.39697293,
-      29.72145966
+      -95.39712189,
+      29.72179383
     ],
-    "note": "Meet the customer outdoors at D, beside the courtyard entrance. Exact position is a placeholder until the site visit.",
+    "note": "Meet the customer in the North Wing lobby at D, through entrance C. The lobby pin is approximate; confirm the exact hand-off spot and access on site.",
     "photo": "",
-    "photoAlt": "Confirmed outdoor Jones College delivery spot"
+    "photoAlt": "North Wing lobby delivery spot",
+    "shortLabel": "North lobby"
   },
   "sections": [
     {
@@ -213,24 +214,31 @@ window.JONES_DELIVERY = {
         29.7213925
       ],
       [
-        -95.3969546,
-        29.7214912
+        -95.3971036,
+        29.7216957
       ],
       [
-        -95.39697293,
-        29.72145966
+        -95.3970999,
+        29.7217174
+      ],
+      [
+        -95.39712334,
+        29.7217526
+      ],
+      [
+        -95.39712189,
+        29.72179383
       ]
     ],
-    "source": "OpenStreetMap pedestrian ways, retrieved 2026-11-17; draft final connection to D.",
+    "source": "OpenStreetMap pedestrian ways, retrieved 2026-11-17; draft final connection to North Wing entrance C and lobby D.",
     "osmWayIds": [
       "1528606935",
       "87452244",
       "44896171",
       "1051165099",
-      "255487614",
-      "903142675"
+      "255487614"
     ],
-    "entranceIndex": 24
+    "entranceIndex": 26
   },
   "steps": [
     {
@@ -252,16 +260,16 @@ window.JONES_DELIVERY = {
       "to": 23
     },
     {
-      "title": "Find entrance A",
-      "instruction": "Take the short diagonal path to the central / commons building. A is the recommended entrance for this draft.",
+      "title": "Find North Wing entrance C",
+      "instruction": "Continue north along the courtyard walkway to the North Wing. Use entrance C for the lobby delivery; confirm this draft door on site.",
       "from": 23,
-      "to": 24
+      "to": 26
     },
     {
-      "title": "Meet the customer at D",
-      "instruction": "Meet outdoors at D beside entrance A. The exact spot and photo need confirmation on site.",
-      "from": 24,
-      "to": 25
+      "title": "Meet in the North Wing lobby",
+      "instruction": "Go through entrance C and meet the customer in the North Wing lobby at D. The exact lobby spot and access need confirmation on site.",
+      "from": 26,
+      "to": 27
     }
   ],
   "landmarks": [

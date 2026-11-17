@@ -161,7 +161,8 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
           kind: entrance.id === config.recommendedEntrance ? 'recommended' : 'alternative',
           offset: entrance.id === config.recommendedEntrance ? [-70, -10] : entrance.id === 'C' ? [-110, 15] : [70, 5]
         });
-        addMarker({ ...config.dropoff, label: 'D · Drop-off', kind: 'dropoff', offset: [58, 20] });
+        const dropoffLabel = config.dropoff.shortLabel || 'Drop-off';
+        addMarker({ ...config.dropoff, label: `D · ${dropoffLabel}`, kind: 'dropoff', offset: [58, 20] });
         for (const landmark of config.landmarks || []) addMarker({ ...landmark, id: landmark.name, label: landmark.name, kind: 'landmark', offset: [0, -2] });
         const updateMarkers = () => {
           // Keep delivery pins readable; 3D building names are anchored in the scene.
@@ -180,7 +181,7 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
             const visible = p && p.x > 0 && p.y > 58 && p.x < view.width && p.y < view.height - 20;
             m.element.hidden = !visible; m.leader.style.display = visible && m.kind !== 'section' && m.kind !== 'landmark' ? '' : 'none'; m.dot.hidden = !visible;
             if (!visible) continue;
-            if (m.kind === 'dropoff') m.element.querySelector('span').textContent = is3D ? 'D · Drop-off' : 'Jones · Drop-off D';
+            if (m.kind === 'dropoff') m.element.querySelector('span').textContent = is3D ? `D · ${dropoffLabel}` : `Jones · ${dropoffLabel}`;
             const offset = !is3D && m.kind === 'dropoff' ? [0, -12] : m.offset;
             const width = m.element.offsetWidth, height = m.element.offsetHeight;
             const candidates = [[0, 0], [0, -40], [0, 40], [-55, 0], [55, 0], [-55, -45], [55, -45], [-55, 45], [55, 45], [0, -80]];

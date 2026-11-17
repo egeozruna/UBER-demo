@@ -12,10 +12,10 @@
   <link rel="stylesheet" href="../rice-campus/map.css">
   <script src="https://js.arcgis.com/4.34/" defer></script>
   <link rel="stylesheet" href="delivery.css">
-  <script src="route-config.js" defer></script>
+  <script src="route-config.js?v=north-lobby-1" defer></script>
   <script src="walking-paths.js" defer></script>
-  <script src="map-engine.js?v=anchored-labels-1" defer></script>
-  <script src="app.js" defer></script>
+  <script src="map-engine.js?v=north-lobby-1" defer></script>
+  <script src="app.js?v=north-lobby-1" defer></script>
 </head>
 <body>
 <div class="device-stage"><div class="phone-frame"><div class="app-screen">
@@ -38,7 +38,7 @@
   <p class="draft-note" id="draft-note">Draft route &amp; pins · confirm on site before testing</p>
   <div id="delivery-active">
     <div class="delivery-heading"><h1>Deliver to Jones College</h1><span class="walking-badge">Walk</span></div>
-    <p class="route-summary">Academic Quad → Jones · <span id="route-distance">Draft walking route</span></p>
+    <p class="route-summary">Academic Quad → <span id="dropoff-name">North Wing lobby</span> · <span id="route-distance">Draft walking route</span></p>
     <div id="route-details">
       <div class="step-card" aria-live="polite"><span class="step-number" id="step-number">1</span><div><strong id="step-title"></strong><p id="step-instruction"></p></div></div>
       <div class="step-controls"><button id="previous-step" type="button" aria-label="Previous direction">←</button><span id="step-count">Step 1 of 5 · manual steps</span><button id="next-step" type="button" aria-label="Next direction">→</button></div>
