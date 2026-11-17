@@ -14,7 +14,7 @@ The facilitator should time the walk and verify the participant identifies the a
 
 - A draft walking route of approximately 470 m from Academic Quad to Jones, following mapped pedestrian ways.
 - Five manual direction steps. The arrows focus the selected route segment; recenter shows the whole route again.
-- Jones's actual published 3D geometry, with the north wing, south wing, and central/commons section labeled. A neutral material simplifies its appearance.
+- Jones's actual published 3D geometry, with the north wing, south wing, and central/commons names anchored above their roofs. Building names stay in place as the camera rotates and can be hidden by the model; entrance and drop-off pins remain prominent overlays. A neutral material simplifies its appearance.
 - Dragging, zoom, and **Approach / Courtyard / Overhead** camera presets.
 - Entrance candidates **A, B, C**, with **A** marked recommended for this draft, plus a separate purple outdoor hand-off marker **D**. Selecting an alternative does not silently change the intended delivery destination.
 - An editable drop-off photo placeholder and delivery completion/reset.

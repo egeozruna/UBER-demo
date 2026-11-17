@@ -92,9 +92,26 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
             uniqueValueInfos: [{ value: 'Jones College', symbol: meshSymbol('#b4d1c1', '#688d7a') }]
           }
         });
+        // World-anchored text sits just above each roof. Let the 3D renderer
+        // handle perspective and occlusion instead of relocating DOM labels.
+        const sectionLabels = new GraphicsLayer({
+          title: 'Jones building sections', visible: false,
+          elevationInfo: { mode: 'relative-to-scene', offset: 0.6, unit: 'meters' },
+          screenSizePerspectiveEnabled: false,
+          graphics: config.sections.map(section => new Graphic({
+            geometry: point(section.coordinates),
+            symbol: { type: 'point-3d', symbolLayers: [{
+              type: 'text', text: section.name, size: '10px',
+              font: { family: 'Arial', weight: 'bold' },
+              material: { color: '#3e4e45' },
+              background: { color: [255, 255, 255, 0.9] },
+              horizontalAlignment: 'center', verticalAlignment: 'middle'
+            }] }
+          }))
+        });
         const map = new Map({
           basemap: null, ground: { surfaceColor: '#e9e9e5', opacity: 1 },
-          layers: [lawns, openSpaces, roads, paths, trees, footprints, buildings, route, currentStep]
+          layers: [lawns, openSpaces, roads, paths, trees, footprints, buildings, sectionLabels, route, currentStep]
         });
         view = new SceneView({
           container, map, spatialReference, viewingMode: 'local', qualityProfile: 'medium',
@@ -145,11 +162,10 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
           offset: entrance.id === config.recommendedEntrance ? [-70, -10] : entrance.id === 'C' ? [-110, 15] : [70, 5]
         });
         addMarker({ ...config.dropoff, label: 'D · Drop-off', kind: 'dropoff', offset: [58, 20] });
-        for (const section of config.sections) addMarker({ ...section, id: section.name, label: section.name, kind: 'section', offset: [0, -4] });
         for (const landmark of config.landmarks || []) addMarker({ ...landmark, id: landmark.name, label: landmark.name, kind: 'landmark', offset: [0, -2] });
         const updateMarkers = () => {
-          // Reserve space for controls, then place delivery pins before building labels.
-          // Screen-space placement keeps labels separate while the camera rotates.
+          // Keep delivery pins readable; 3D building names are anchored in the scene.
+          // The remaining landmark labels are only used on the 2D walking map.
           const rootBox = markerRoot.getBoundingClientRect();
           const occupied = [...document.querySelectorAll('.map-top > *, .map-controls, .angle-controls:not([hidden])')].map(el => {
             const b = el.getBoundingClientRect();
@@ -208,7 +224,7 @@ window.createJonesMap = function createJonesMap(container, config, callbacks) {
               try { await buildings.load(); buildings.visible = true; await view.whenLayerView(buildings); }
               catch (error) { buildings.visible = false; throw error; }
             }
-            is3D = next; buildings.visible = is3D;
+            is3D = next; buildings.visible = is3D; sectionLabels.visible = is3D;
             currentStep.visible = !is3D;
             navigation.navigationMode = is3D ? 'rotate' : 'pan';
             callbacks.onMode(is3D);
